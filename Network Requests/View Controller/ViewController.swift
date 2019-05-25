@@ -19,33 +19,24 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        components?.queryItems = queries.map { URLQueryItem(name: $0.key, value: $0.value) }
-        
-        guard let apiURL = components?.url else {
+        guard let apiURL = url.withQueries(queries) else {
             print(#line, #function, "Can't convert \(url)")
             return
         }
         
         print(#line, #function, apiURL)
         
-        let task = URLSession.shared.dataTask(with: apiURL) { data, response, error in
-            guard let data = data else {
-                print(#line, #function, error?.localizedDescription ?? "nil")
-                return
-            }
-            
-            print(#line, #function, data, "received")
-            
-            guard let text = String(data: data, encoding: .utf8) else {
-                print(#line, #function, "Can't decode data")
-                return
-            }
-            
-            print(#line, #function, text)
-        }
+        let networkManager = NetworkController()
         
-        task.resume()
+        networkManager.fetchPhotoInfo(from: apiURL) { photoInfo in
+            guard let photoInfo = photoInfo else {
+                print(#line, #function, "Can't load data from \(self.url)")
+                return
+            }
+            networkManager.fetchImage(from: photoInfo.url) { image in
+                print(#line, #function, image?.description ?? "nil")
+            }
+        }
     }
 
 
