@@ -1,5 +1,5 @@
 //
-//  NetworkController.swift
+//  NetworkManager.swift
 //  Network Requests
 //
 //  Created by Denis Bystruev on 25/05/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class NetworkController {
+final class NetworkManager {
     func fetchPhotoInfo(from url: URL, completion: @escaping (PhotoInfo?) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { data, _, _ in
             guard let data = data else {
