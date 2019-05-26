@@ -64,7 +64,7 @@ class ViewController: UIViewController {
     func transition(to size: CGSize) {
         if size.width < size.height {
             topStackView.axis = .vertical
-            topStackView.spacing = 0
+            topStackView.spacing = 8
             widthConstraint.priority = .defaultLow
             heightConstraint.priority = .defaultHigh
         } else {
